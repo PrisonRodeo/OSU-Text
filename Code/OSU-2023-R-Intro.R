@@ -1,5 +1,7 @@
-##############################################
-# This is some code from the January 2022
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Introduction                                ####
+#
+# This is some code from the January 2023
 # workshop on quantitative text analysis, 
 # conducted at the School of Public Policy at
 # Oregon State University. It is designed to 
@@ -9,10 +11,39 @@
 #
 # File created December 14, 2021.
 #
-# File last updated December 14, 2021.
-###############################################
+# File last updated January 7, 2023.
 #
-# Basics: OBJECTS
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# WHAT TO DO                                  ####
+#
+# This file is R code: commands that tell R to 
+# do certain things. In general, the way to use 
+# this file is to highlight the commands you want 
+# to run, and then click the little "Run" icon 
+# near the upper-right of this window. That will 
+# run the code that is highlighted, and the results
+# of doing so will appear either in the "Console"
+# window below, or in the "Plots" window to the 
+# lower-right.
+#
+# If the code has a hashtag (#) at the beginning 
+# (like this line does), it is a comment; high-
+# lighting it and running it won't *do* anything.
+# Comments are here to give you instructions. A
+# line that does not begin with a hashtag (like 
+# this):
+
+version
+
+# is an actual command; highlighting it and 
+# clicking "Run" will run the command as 
+# described above. (If you highlight and click
+# "Run" for the word "version" above, R will tell
+# you some information about the version of R
+# that is currently running.)
+#
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Basics: OBJECTS                             ####
 #
 # R is an "object oriented" language, and the
 # most basic thing one does in R is an "assignment."
@@ -159,13 +190,13 @@ is.matrix(baz)
 # There's lots more to say about objects, but 
 # that's enough for now. 
 #
-###################################################
-# READING IN DATA
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# READING IN DATA                             ####
 #
 # Most of the time, you won't want to enter
 # numeric data by hand. Instead, you will 
 # read data from something like a spreadsheet 
-# into Rstudio from some other source file. 
+# into RStudio from some other source file. 
 # There are many ways to do this.
 #
 # RStudio can read data in many different
@@ -185,16 +216,49 @@ is.matrix(baz)
 # menu option above, or by using "setwd". So, 
 # for example:
 
-setwd("~/Dropbox (Personal)/PLSC503/Data")
+setwd("~/Dropbox (Personal)/OSU Workshop/Data")
 
+# (In this case, you'll want to substitute a local
+# directory on your own machine in the file path
+# listed.)
+#
 # Reading the data is then easy:
 
-SCOTUS <- read.csv("SCOTUS-votes.csv")
+SCOTUS <- read.csv("SCOTUS.csv")
 
 # (Note that this command does not work unless
 # you have the data stored "locally," in this
-# case, in a folder called "PLSC503/Data"). 
+# case, in a folder called "OSU Workshop/Data"). 
 #
+# We can also read data directly
+# from the web, using a URL for the file.
+# There are a number of ways to do this,
+# but the easiest is probably to install 
+# and use an R "package" called "readr" 
+# that handles URLs. Packages are bundles of
+# code that do specific things; they're a 
+# key component of using R.
+#
+# We can install a package (that is, get
+# the package from an on-line repository and
+# put it on the local computer) using the
+# "install.packages()" command:
+
+install.packages("readr")
+
+# Once we've installed the package (that
+# is, put it on our machine) we then need
+# to load it up for use, using the "library()"
+# command:
+
+library(readr)
+
+# Once we've done that, we can use a command
+# that is part of the "readr" package called 
+# "read_csv()" to actually get the data:
+
+SCOTUS <- read_csv("https://raw.githubusercontent.com/PrisonRodeo/OSU-Text/main/Data/SCOTUS.csv")
+
 # These data are on U.S. Supreme Court 
 # justices who have served since 1946.
 # The first column is the justice's name,
@@ -205,30 +269,8 @@ SCOTUS <- read.csv("SCOTUS-votes.csv")
 # whether (=1) or not (=0) the justice
 # was appointed by a Republican president.
 #
-# We can also read the same data directly
-# from the web, using a URL for the file.
-# There are a number of ways to do this,
-# but the easiest is probably to install 
-# and use an R "package" called "RCurl" 
-# that handles URLs. 
-
-install.packages("RCurl")
-
-# Once we've installed the package (that
-# is, put it on our machine) we then need
-# to load it up for use:
-
-library(RCurl)
-
-# This is the part that actually gets 
-# the data:
-
-url <- getURL("https://raw.githubusercontent.com/PrisonRodeo/OSU-Text/main/Data/SCOTUS-votes.csv")
-SCOTUS <- read.csv(text = url)
-rm(url) # remove that object
-
-# From there, we can do things like "look
-# at" the data:
+# Once we've read in ther data, we can do 
+# things like "look at" the data:
 
 View(SCOTUS)
 
@@ -239,10 +281,10 @@ summary(SCOTUS)
 # FWIW, those are data on U.S. Supreme Court justices'
 # liberal voting percentages  
 
-###############################################
-# SINGLING OUT ELEMENTS:
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# SINGLING OUT ELEMENTS:                          ####
 #
-# A data frame is rows and columns. We can
+# A data frame comprises rows and columns. We can
 # extract rows, columns, or cells by specifying
 # which one we need using the square-brace
 # ("[]") notation. Watch what happens when we
@@ -252,7 +294,7 @@ SCOTUS
 
 # The notation "FOO[R,C]" denotes the Rth
 # row and the Cth column of the object called
-# "FOO." So if we wanted to get Samuel Alito's
+# "FOO." So if we wanted to get Potter Stewart's
 # row from the SCOTUS data, we could enter:
 
 SCOTUS[24,]
@@ -271,7 +313,7 @@ SCOTUS[,2]
 
 SCOTUS[24,3]
 
-# which tells us that justice Alito was 
+# which tells us that justice Stewart was 
 # appointed by a Republican (you probably 
 # knew that). This is useful for a
 # lot of things; for example, we can use
@@ -289,8 +331,8 @@ GOPJustices <- SCOTUS[SCOTUS$GOP==1,]
 
 View(GOPJustices)
 
-#############################################
-# PLOTTING / GRAPHS
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# PLOTTING / GRAPHS                           ####
 #
 # R / RStudio is fantastic for visualizing and
 # plotting / graphing data. This is a fast
@@ -326,7 +368,7 @@ with(VB, plot(Year,WinPct,
 # We can do a similar thing with the 
 # Supreme Court data:
 
-with(SCOTUS, plot(CRPercent~GOP))
+with(SCOTUS, plot(LiberalPct~GOP))
 
 # This is a (bad) "scatterplot"; the values
 # of CRPercent are on the vertical axis, and 
@@ -337,11 +379,10 @@ with(SCOTUS, plot(CRPercent~GOP))
 # (But it's a really bad scatterplot. Please 
 # don't ever make a scatterplot like this.)
 #
-#
-#############################################
-# LOOPS AND BASIC PROGRAMMING
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# LOOPS AND BASIC PROGRAMMING                   ####
 # 
-# We'll do some work with simulations
+# We'll do a little work with simulations
 # in this workshop. That means repetition,
 # and that means loops. The basic structure
 # of a loop in R is:
@@ -422,8 +463,8 @@ summary(Sums)
 # ...and we could plot the results, etc.
 #
 #
-#############################################
-# GETTING HELP
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# GETTING HELP                                ####
 #
 # R has extensive documentation, and a help
 # function that is available at the command
@@ -434,12 +475,18 @@ summary(Sums)
 
 # Note that this will bring up a help file
 # on any command that is part of a currently-
-# loaded package. If the package is not loaded,
-# you'll get an error:
+# loaded package. If the package associated
+# with that command is not loaded, you'll get 
+# an error. For example:
 
 ?read.dta
 
-library(foreign)
+# There's an error because "read.dta" is a command
+# in the "foreign" package. But if you install and 
+# load that package, then everything is fine:
+
+install.packages("foreign") # install
+library(foreign)            # load
 ?read.dta
 
 # One can also do a omnibus search for help on
@@ -457,4 +504,4 @@ library(foreign)
 
 # OK, time to stop. I hope this was useful.
 #
-############################################
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
