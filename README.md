@@ -2,7 +2,7 @@
 
 This is the Github repository for the one-day workshop on Quantitative Text Analysis, taught at the School of Public Policy at Oregon State University, January 19, 2023. Here you will find slides, data, computer code, reading materials, and all other details about the workshop. 
 
-Above, you will find (hopefully) intuitively-labeled folders containing those workshop materials. The slides for the workshop are available in PDf format in the "Workshop Slides" folder, and the R code that matches those slides is in the "Code" folder. There is also: 
+Above, you will find (hopefully) intuitively-labeled folders containing those workshop materials. The slides for the workshop are available in PDF format in the "Workshop Slides" folder, and the R code that matches those slides is in the "Code" folder. There is also: 
 
  - "Introduction to R," a set of (PDF-format) slides that introduce the reader to the R statistical language, the RStudio user interface, and some other aspects of R; and
  
